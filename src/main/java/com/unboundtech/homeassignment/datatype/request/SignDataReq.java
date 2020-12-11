@@ -3,7 +3,7 @@ package com.unboundtech.homeassignment.datatype.request;
 import lombok.Data;
 
 @Data
-public class StoreDataReq {
+public class SignDataReq {
 	private Integer keyId;
-	private byte[] Data;
+	private String Data;
 }

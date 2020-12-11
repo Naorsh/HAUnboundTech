@@ -28,7 +28,7 @@ public class KeyManager implements IKeyManager{
 		}
 	}
 	
-	public Signature sign(KeyPair keyPair, byte[] data) {
+	public byte[] sign(KeyPair keyPair, byte[] data) {
 		Signature sig;
 		byte[] signatureBytes;
 		try {
@@ -41,15 +41,17 @@ public class KeyManager implements IKeyManager{
 			e.printStackTrace();
 			throw new InternalServerErrorException("error signing data", e);
 		}
-        return sig;
+        return signatureBytes;
 	}
 	
-	public boolean verify(KeyPair keyPair, byte[] data, Signature sig) {
+	public boolean verify(KeyPair keyPair, byte[] data, byte[] byteSig) {
+		Signature sig;
 		try {
+			sig = Signature.getInstance("NONEwithRSA");
 			sig.initVerify(keyPair.getPublic());
 	        sig.update(data);
-	        return sig.verify(data);
-		} catch (InvalidKeyException | SignatureException e) {
+	        return sig.verify(byteSig);
+		} catch (InvalidKeyException | SignatureException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new InternalServerErrorException("error verifying data", e);
 		}

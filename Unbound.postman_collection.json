@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "fa67e784-ccb4-4624-8667-c73285acb7e5",
+		"name": "Unbound",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate Key",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignName\":\"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/unbound/key/generate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"unbound",
+						"key",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Key",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignName\":\"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/unbound/key/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"unbound",
+						"key",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Keys List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignName\":\"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/unbound/keys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"unbound",
+						"keys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyId\": 1,\r\n    \"data\" : \"TmFvciBTaHVrcnVuIFRlc3Q=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/unbound/data/sign",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"unbound",
+						"data",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyId\": 2,\r\n    \"data\" : \"TmFvciBTaHVrcnVuIFRlc3Q=\",\r\n    \"signature\": \"JZC4fQStHf+3/n1ZgcT/35Q2sgJUq0xbuiNQUjE432ZJl7YYSTWVOxbxFwxoMZ0Mslr2+Km42qcV3mwdF4mbBSCMmu4W/hBc4hHJRRkpnXlvGZtkOFLmezarS2vweQ4pPYOPRiEmen6tSUtFu16ZF8QvbD6IUHZeoQnyNZCF/sYcc9OoVNPTHIahdPmuXcshMmTFUBhqcpYE/DNkJRFM7UBNz46VYj945/hoLzqB+AEh4LTUTEyTxPwTPqlOdQIgmdVH1Og/+cX4Vqfgm9t0xBzql0JiNMSnJlOr4b4FSCVy4gGQiXVy83zzhhuTiYNQMETnNQWNeNNrf74aAVO+AQ==\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/unbound/data/verify",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"unbound",
+						"data",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

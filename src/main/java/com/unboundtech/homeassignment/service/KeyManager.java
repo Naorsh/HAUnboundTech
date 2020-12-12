@@ -6,12 +6,12 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.util.Base64;
 
 import javax.ws.rs.InternalServerErrorException;
 
 import org.springframework.stereotype.Service;
 
+import com.unboundtech.homeassignment.consts.Consts;
 import com.unboundtech.homeassignment.service.interfaces.IKeyManager;
 
 @Service
@@ -19,12 +19,12 @@ public class KeyManager implements IKeyManager{
 	public KeyPair keyGenerator() {
 		KeyPairGenerator kpg;
 		try {
-			kpg = KeyPairGenerator.getInstance("RSA");
+			kpg = KeyPairGenerator.getInstance(Consts.RSA);
 			kpg.initialize(2048); 
 	        return kpg.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			throw new InternalServerErrorException("error generating key pair", e);
+			throw new InternalServerErrorException(Consts.ERROR_GENERATING_KEY_MESSAGE, e);
 		}
 	}
 	
@@ -32,28 +32,27 @@ public class KeyManager implements IKeyManager{
 		Signature sig;
 		byte[] signatureBytes;
 		try {
-			sig = Signature.getInstance("NONEwithRSA");
+			sig = Signature.getInstance(Consts.NONE_WITH_RSA_ALGO);
 			sig.initSign(keyPair.getPrivate());
 	        sig.update(data);
 	        signatureBytes = sig.sign();
-	        System.out.println("Signature:" + Base64.getEncoder().encode(signatureBytes));//new BASE64Encoder().encode(signatureBytes));
+	        return signatureBytes;
 		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
 			e.printStackTrace();
-			throw new InternalServerErrorException("error signing data", e);
+			throw new InternalServerErrorException(Consts.ERROR_SIGNING_DATA_MESSAGE, e);
 		}
-        return signatureBytes;
 	}
 	
 	public boolean verify(KeyPair keyPair, byte[] data, byte[] byteSig) {
 		Signature sig;
 		try {
-			sig = Signature.getInstance("NONEwithRSA");
+			sig = Signature.getInstance(Consts.NONE_WITH_RSA_ALGO);
 			sig.initVerify(keyPair.getPublic());
 	        sig.update(data);
 	        return sig.verify(byteSig);
 		} catch (InvalidKeyException | SignatureException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			throw new InternalServerErrorException("error verifying data", e);
+			throw new InternalServerErrorException(Consts.ERROR_VERIFYING_DATA_MESSAGE, e);
 		}
 	}
 	

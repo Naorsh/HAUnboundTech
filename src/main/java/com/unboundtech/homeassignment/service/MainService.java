@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.unboundtech.homeassignment.consts.Consts;
 import com.unboundtech.homeassignment.datatype.request.SignDataReq;
 import com.unboundtech.homeassignment.datatype.request.VerifyDataReq;
 import com.unboundtech.homeassignment.datatype.response.BaseResponse;
@@ -25,19 +26,19 @@ public class MainService implements IMainService {
 	@Autowired
 	private IKeyManager keyManager;
 	
-	private static Integer i;
+	private static Integer keyIndex;
 	private static HashMap<Integer,KeyPair> rsaKeyPair;
 	
 	static {
-		i=1;
+		keyIndex=1;
 		rsaKeyPair = new HashMap<Integer, KeyPair>();
 	}
 	
-	//input validation for key
+	//create Response for bad key input validation
 	private ResponseEntity<?> createBadInputRes(){
 		BaseResponse response = new BaseResponse();
-		response.setStatus("Failed");
-		response.setMessage("Key does not exist");
+		response.setStatus(Consts.FAILED_INDICATOR);
+		response.setMessage(Consts.KEY_DOES_NOT_EXIST_MESSAGE);
 		return new ResponseEntity<>(response ,HttpStatus.BAD_REQUEST);
 	}
 
@@ -45,10 +46,10 @@ public class MainService implements IMainService {
 	public ResponseEntity<?> generateKeyPair(){
 		GenerateKeyRes response = new GenerateKeyRes();
 		KeyPair pair = keyManager.keyGenerator();
-		response.setKeyId(i);
-		rsaKeyPair.put(i++, pair);
-		response.setStatus("OK");
-		response.setMessage("key generated successfully");
+		response.setKeyId(keyIndex);
+		rsaKeyPair.put(keyIndex++, pair);
+		response.setStatus(Consts.OK_INDICATOR);
+		response.setMessage(Consts.KEY_GENERATED_SUCCESSFULLY_MESSAGE);
 		return new ResponseEntity<GenerateKeyRes>(response, HttpStatus.OK);
 	}
 
@@ -57,8 +58,8 @@ public class MainService implements IMainService {
 		if(keyIsExist(key)){
 			BaseResponse response = new BaseResponse();
 			rsaKeyPair.remove(key);
-			response.setStatus("OK");
-			response.setMessage("key deleted successfully");
+			response.setStatus(Consts.OK_INDICATOR);
+			response.setMessage(Consts.KEY_DELETED_SUCCESSFULLY_MESSAGE);
 			return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
 		}
 		return createBadInputRes();
@@ -87,7 +88,7 @@ public class MainService implements IMainService {
 		if(keyIsExist(request.getKeyId())){
 			VerifyDataRes response = new VerifyDataRes();
 			response.setVerified(keyManager.verify(rsaKeyPair.get(request.getKeyId()), Base64.getDecoder().decode(request.getData()), Base64.getDecoder().decode(request.getSignature())));
-			response.setStatus("OK");
+			response.setStatus(Consts.OK_INDICATOR);
 			return new ResponseEntity<VerifyDataRes>(response,HttpStatus.OK);
 		}
 		return createBadInputRes();
@@ -100,7 +101,7 @@ public class MainService implements IMainService {
 			return new ResponseEntity<GetKeysListRes>(response, HttpStatus.NO_CONTENT);
 		}
 		response.setKeys(rsaKeyPair.keySet());
-		response.setStatus("OK");
+		response.setStatus(Consts.OK_INDICATOR);
 		return new ResponseEntity<GetKeysListRes>(response, HttpStatus.OK);
 	}
 
